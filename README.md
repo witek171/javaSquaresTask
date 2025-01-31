@@ -35,15 +35,15 @@ Liczba `x` jest "przerośnięta", jeśli istnieje liczba `y > x`, dla której `k
 - Obliczenie wartości `k(n)` dla podanej liczby `n`.
 - Obliczenie liczby "przerośniętych" liczb mniejszych lub równych `n`.
 - Obsługa dużych zakresów wejściowych, dzięki implementacji algorytmów obliczeniowych optymalizujących czas.
-- - Programowanie dynamiczne do rozwiązywania problemu rozkładów liczb.
+- Programowanie dynamiczne do rozwiązywania problemu rozkładów liczb.
 - Obsługa wyjątków i walidacja danych wejściowych.
 
 ## Uruchomienie
 
 ### Wymagania:
 
-- Java 17 lub nowsza
-- Spring Boot
+- JDK 17 lub nowsza
+- Wolny port 8084
 
 ### Instalacja:
 
@@ -59,7 +59,7 @@ Liczba `x` jest "przerośnięta", jeśli istnieje liczba `y > x`, dla której `k
    ```bash
    ./mvnw spring-boot:run
    ```
-- Lub uruchom plik jar
+Lub uruchom plik jar
    ```bash
    javaSquaresTask-1.0.0
    ```
