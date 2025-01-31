@@ -1,82 +1,118 @@
 package org.wiciu;
 
-import java.util.*;
+import java.util.Scanner;
 
 public class Main {
 
     // Stałe
-    private static final int s12 = 1 + 4 + 9 + 16 + 25 + 36 + 49 + 64 + 81 + 100 + 121 + 144;
-    private static final int dpkw = 30;
-    private static final int magicConst = 130;
+    private static final int MAX_SQUARE_SUM = 630;
+//    630 = 1 + 4 + 9 + 16 + 25 + 36 + 49 + 64 + 81 + 100 + 121 + 144
+    private static final int MAX_SQUARES = 30;
+    private static final int MAGIC_CONSTANT = 130;
 
     // Tablice pomocnicze
-    private static boolean[][] dasie = new boolean[s12 + 1][dpkw];
-    private static int[] k = new int[s12 + 1];
+    private static boolean[][] canBeFormed = new boolean[MAX_SQUARE_SUM + 1][MAX_SQUARES];
+    private static int[] minimumSquares = new int[MAX_SQUARE_SUM + 1];
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        // Preprocessing
-        preprocessing();
+        // Preprocessing - przygotowanie tablic
+        preprocess();
 
         // Odczytujemy wartość n
         long n = sc.nextLong();
 
-        if (n <= s12) {
-            // Jeśli n <= s12
-            if (k[(int) n] == 100) {
-                System.out.print("- ");
-            } else {
-                System.out.print(k[(int) n] + " ");
-            }
-            System.out.println(ileprzerosdox((int) n));
+        // Jeśli n jest mniejsze lub równe MAX_SQUARE_SUM, obliczamy wynik dla tej liczby
+        if (n <= MAX_SQUARE_SUM) {
+            printResultForSmallNumber(n);
         } else {
-            // Jeśli n > s12
-            long suma = 0;
-            int indeks = 0;
-            while (suma < n) {
-                indeks++;
-                suma += (long) indeks * indeks;
-            }
-            int K = (suma - n > magicConst) ? indeks : (k[s12 - (int) (suma - n)] > 12 ? indeks + 1 : indeks);
-            System.out.print(K + " ");
-            long wynik = 0;
-            wynik += ileprzerosdox(s12);
-            wynik += (ileprzerosdox(s12) - ileprzerosdox(s12 - magicConst)) * (indeks - 12 - 1);
-            if (suma - n <= magicConst) {
-                wynik += ileprzerosdox(s12 - (int) (suma - n)) - ileprzerosdox(s12 - magicConst);
-            }
-            System.out.println(wynik);
+            // Dla n > MAX_SQUARE_SUM obliczamy wynik, korzystając z optymalizacji
+            printResultForLargeNumber(n);
         }
     }
 
-    // Funkcja preprocesująca dane
-    private static void preprocessing() {
-        Arrays.fill(k, 100);
+    // Funkcja wstępnego przetwarzania
+    private static void preprocess() {
+        // Wypełniamy tablicę minimumSquares wartością 100 (nie znaleziono rozkładu)
+        for (int i = 0; i < minimumSquares.length; ++i) {
+            minimumSquares[i] = 100;
+        }
 
-        for (int i = 0; i < dpkw; ++i)
-            dasie[0][i] = true;
+        // Ustawiamy dla każdej liczby możliwość rozkładu na sumy kwadratów
+        for (int i = 0; i < MAX_SQUARES; ++i) {
+            canBeFormed[0][i] = true;
+        }
 
-        for (int i = 1; i <= s12; ++i) {
-            for (int j = 1; j < dpkw && j * j <= i; ++j) {
-                dasie[i][j] = (dasie[i][j - 1] || dasie[i - j * j][j - 1]);
-                if (k[i] == 100 && dasie[i][j])
-                    k[i] = j;
+        // Sprawdzamy wszystkie liczby od 1 do MAX_SQUARE_SUM
+        for (int i = 1; i <= MAX_SQUARE_SUM; ++i) {
+            for (int j = 1; j < MAX_SQUARES && j * j <= i; ++j) {
+                canBeFormed[i][j] = (canBeFormed[i][j - 1] || canBeFormed[i - j * j][j - 1]);
+                if (minimumSquares[i] == 100 && canBeFormed[i][j]) {
+                    minimumSquares[i] = j;
+                }
             }
-            for (int j = 1; j < dpkw; ++j)
-                dasie[i][j] |= dasie[i][j - 1];
+            // Uaktualniamy dostępność rozkładów z poprzednich kroków
+            for (int j = 1; j < MAX_SQUARES; ++j) {
+                canBeFormed[i][j] |= canBeFormed[i][j - 1];
+            }
         }
     }
 
-    // Funkcja licząca liczbę "przerosnietych" liczb
-    private static int ileprzerosdox(int x) {
-        int zl = 0, min = 99;
-        for (int i = s12; i > 0; --i) {
-            if (k[i] < min)
-                min = k[i];
-            if (i <= x && k[i] > min)
-                ++zl;
+    // Funkcja obliczająca liczbę "przerosnietych" liczb
+    private static int countOvergrownNumbers(int x) {
+        int overgrownCount = 0;
+        int minSquares = 99;
+
+        // Dla każdej liczby do MAX_SQUARE_SUM, porównujemy liczbę kwadratów
+        for (int i = MAX_SQUARE_SUM; i > 0; --i) {
+            if (minimumSquares[i] < minSquares) {
+                minSquares = minimumSquares[i];
+            }
+            if (i <= x && minimumSquares[i] > minSquares) {
+                overgrownCount++;
+            }
         }
-        return zl;
+        return overgrownCount;
+    }
+
+    // Funkcja do wypisywania wyników dla n <= MAX_SQUARE_SUM
+    private static void printResultForSmallNumber(long n) {
+        if (minimumSquares[(int) n] == 100) {
+            System.out.print("- ");
+        } else {
+            System.out.print(minimumSquares[(int) n] + " ");
+        }
+        System.out.println(countOvergrownNumbers((int) n));
+    }
+
+    // Funkcja do wypisywania wyników dla n > MAX_SQUARE_SUM
+    private static void printResultForLargeNumber(long n) {
+        long sumOfSquares = 0;
+        int index = 0;
+
+        // Określamy, gdzie suma kwadratów przekroczyła n
+        while (sumOfSquares < n) {
+            index++;
+            sumOfSquares += (long) index * index;
+        }
+
+        int K = (sumOfSquares - n > MAGIC_CONSTANT)
+                ? index
+                : (minimumSquares[MAX_SQUARE_SUM - (int) (sumOfSquares - n)] > 12 ? index + 1 : index);
+
+        System.out.print(K + " ");
+
+        long result = 0;
+        result += countOvergrownNumbers(MAX_SQUARE_SUM);
+        result += (long) (countOvergrownNumbers(MAX_SQUARE_SUM) - countOvergrownNumbers(MAX_SQUARE_SUM - MAGIC_CONSTANT))
+                * (index - 12 - 1);
+
+        if (sumOfSquares - n <= MAGIC_CONSTANT) {
+            result += countOvergrownNumbers(MAX_SQUARE_SUM - (int) (sumOfSquares - n))
+                    - countOvergrownNumbers(MAX_SQUARE_SUM - MAGIC_CONSTANT);
+        }
+
+        System.out.println(result);
     }
 }
