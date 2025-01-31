@@ -2,23 +2,22 @@ package org.wiciu.service;
 
 import org.springframework.stereotype.Service;
 import org.wiciu.model.SquareResponse;
+import java.util.Arrays;
 
 @Service
 public class SquareService {
     private static final int MAX_SQUARE_SUM = 630;
     private static final int MAX_SQUARES = 30;
     private static final int MAGIC_CONSTANT = 130;
-    private static boolean[][] canBeFormed = new boolean[MAX_SQUARE_SUM + 1][MAX_SQUARES];
-    private static int[] minimumSquares = new int[MAX_SQUARE_SUM + 1];
+    private static final boolean[][] canBeFormed = new boolean[MAX_SQUARE_SUM + 1][MAX_SQUARES];
+    private static final int[] minimumSquares = new int[MAX_SQUARE_SUM + 1];
 
     public SquareService() {
         preprocess();
     }
 
     private void preprocess() {
-        for (int i = 0; i < minimumSquares.length; ++i) {
-            minimumSquares[i] = 100;
-        }
+        Arrays.fill(minimumSquares, 100);
 
         for (int i = 0; i < MAX_SQUARES; ++i) {
             canBeFormed[0][i] = true;
@@ -79,13 +78,21 @@ public class SquareService {
             sumOfSquares += (long) index * index;
         }
 
-        int K = (sumOfSquares - n > MAGIC_CONSTANT)
-                ? index
-                : (minimumSquares[MAX_SQUARE_SUM - (int) (sumOfSquares - n)] > 12 ? index + 1 : index);
+        int K;
+        if (sumOfSquares - n > MAGIC_CONSTANT) {
+            K = index;
+        } else {
+            if (minimumSquares[MAX_SQUARE_SUM - (int) (sumOfSquares - n)] > 12) {
+                K = index + 1;
+            } else {
+                K = index;
+            }
+        }
 
         long result = 0;
         result += countOvergrownNumbers(MAX_SQUARE_SUM);
-        result += (long) (countOvergrownNumbers(MAX_SQUARE_SUM) - countOvergrownNumbers(MAX_SQUARE_SUM - MAGIC_CONSTANT))
+        result += (long) (countOvergrownNumbers(MAX_SQUARE_SUM)
+                - countOvergrownNumbers(MAX_SQUARE_SUM - MAGIC_CONSTANT))
                 * (index - 12 - 1);
 
         if (sumOfSquares - n <= MAGIC_CONSTANT) {
