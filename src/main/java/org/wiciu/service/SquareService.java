@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 @Service
 public class SquareService {
-    private static final int MAX_SQUARE_SUM = 630;
+    private static final int MAX_SQUARE_SUM = 630; // 1 + 4 + 9 + ... + 144
     private static final int MAX_SQUARES = 30;
     private static final int MAGIC_CONSTANT = 130;
     private static final boolean[][] canBeFormed = new boolean[MAX_SQUARE_SUM + 1][MAX_SQUARES];
@@ -52,7 +52,7 @@ public class SquareService {
         }
     }
 
-    private int countOvergrownNumbers(int x) {
+    int countOvergrownNumbers(int x) {
         int overgrownCount = 0;
         int minSquares = 99;
 
@@ -69,7 +69,7 @@ public class SquareService {
         return overgrownCount;
     }
 
-    private SquareResponse calculateLargeNumber(long n) {
+    SquareResponse calculateLargeNumber(long n) {
         long sumOfSquares = 0;
         int index = 0;
 
