@@ -1,4 +1,4 @@
-# Kwadraty - Projekt Rozkładu Liczb na Sumy Kwadratów
+# Zadanie Kwadraty - Projekt na studia
 
 ## Opis Projektu
 
@@ -43,14 +43,21 @@ Liczba `x` jest "przerośnięta", jeśli istnieje liczba `y > x`, dla której `k
 ### Instalacja:
 
 1. Sklonuj repozytorium:
+   ```bash
    git clone https://github.com/witek171/javaSquaresTask.git
-   
+   ```
 2. Wejdź do katalogu projektu:
+   ```bash
    cd javaSquaresTask
-   
-4. Uruchom aplikację:
+   ```
+3. Uruchom aplikację:
+   ```bash
    ./mvnw spring-boot:run
-
+   ```
+- Lub uruchom plik jar
+   ```bash
+   javaSquaresTask-1.0.0
+   ```
 ### Struktura katalogów
 src/main/java/org/wiciu: Katalog zawierający katalogi z plikami z kodem źródłowym aplikacji.
 src/main/resources: Katalog z plikami konfiguracyjnymi.
@@ -58,12 +65,11 @@ pom.xml: Główny plik konfiguracyjny projektu Maven.
 target/: Katalog, w którym kompilowane są pliki wynikowe.
 
 ## Przykład użycia
-API dostępne jest pod adresem /api/squares/calculate. Można obliczyć wartość k(n) i liczbę "przerośniętych" liczb dla liczby n.
-
-Przykładowe zapytanie:
-
+- API dostępne jest pod adresem /api/squares/calculate. Można obliczyć wartość k(n) i liczbę "przerośniętych" liczb dla liczby n.
+- Przykładowe zapytanie:
+```bash
 GET http://localhost:8084/api/squares/calculate?n=30
-
+```
 W odpowiedzi otrzymamy:
 
 {
@@ -72,13 +78,12 @@ W odpowiedzi otrzymamy:
 }
 
 ## Status projektu
-Projekt jest ukończony i działa zgodnie z wymaganiami.
-
+- Projekt jest ukończony i działa zgodnie z wymaganiami.
 ## Możliwości rozwoju
-Optymalizacja dla dużych danych wejściowych (przekraczających obecny zakres).
-Rozbudowa interfejsu użytkownika.
-Rozszerzenie funkcjonalności o obliczenia równoległe dla dużych zbiorów danych.
+- Optymalizacja dla dużych danych wejściowych (przekraczających obecny zakres).
+- Rozbudowa interfejsu użytkownika.
+- Rozszerzenie funkcjonalności o obliczenia równoległe dla dużych zbiorów danych.
 ## Podziękowania
-Inspiracja: XXII Olimpiada Informatyczna.
+- Inspiracja: XXII Olimpiada Informatyczna.
 ## Kontakt
-Witold Pacholik - możesz skontaktować się ze mną na witoldpacholik@wp.pl
+- Witold Pacholik - możesz skontaktować się ze mną na witoldpacholik@wp.pl
