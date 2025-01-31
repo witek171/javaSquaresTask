@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wiciu</groupId>
-    <artifactId>javaSquareTask</artifactId>
+    <artifactId>javaSquaresTask</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
+
     <repositories>
         <repository>
             <id>central</id>
             <url>https://repo.maven.apache.org/maven2</url>
         </repository>
     </repositories>
-
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -22,7 +22,6 @@
         <relativePath/>
         <!--  lookup parent from repository  -->
     </parent>
-
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source> <!-- JDK 21 jest ostatnią stabilną wersją -->
@@ -33,6 +32,9 @@
         <mockito-core.version>3.4.6</mockito-core.version>
         <junit.version>4.13.2</junit.version>
         <lombok.version>1.18.34</lombok.version>
+        <junit-jupiter-api.version>${junit-jupiter-engine.version}</junit-jupiter-api.version>
+        <junit-jupiter-engine.version>5.11.4</junit-jupiter-engine.version>
+        <assertj-core.version>3.16.1</assertj-core.version>
     </properties>
 
     <dependencies>
@@ -56,30 +58,24 @@
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
-
-
-
-
-
         <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.11.4</version>
+            <version>${junit-jupiter-api.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.11.4</version>
+            <version>${junit-jupiter-engine.version}</version>
             <scope>test</scope>
         </dependency>
-
         <!-- AssertJ -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.16.1</version>
+            <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -98,10 +94,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
